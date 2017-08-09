@@ -1610,9 +1610,10 @@ static value_t apply_cl(uint32_t nargs)
         do_setg:
             assert(issymbol(v));
             sym = (symbol_t*)ptr(v);
+            if (isconstant(sym))
+                type_error("set!", "non-const", v);
             v = Stack[SP-1];
-            if (!isconstant(sym))
-                sym->binding = v;
+            sym->binding = v;
             NEXT_OP;
 
         OP(OP_LOADA)
